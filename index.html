@@ -86,6 +86,26 @@ pre{background:#f1efe8;border:1px solid #d3d1c7;border-radius:8px;padding:10px 1
 .sec-lbl{font-size:10px;font-weight:500;color:#888780;letter-spacing:.5px;text-transform:uppercase;margin:10px 0 4px}
 .res-link{display:inline-flex;align-items:center;font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid #b4b2a9;color:#5f5e5a;background:#f1efe8;margin:3px 3px 0 0;text-decoration:none}
 .res-link:hover{border-color:#888780;color:#1a1a18}
+
+.practice-block{background:#FAEEDA;border:1px solid #EF9F27;border-radius:8px;padding:11px 13px;margin:10px 0 4px}
+.practice-hdr{font-size:10px;font-weight:500;color:#633806;letter-spacing:.5px;text-transform:uppercase;margin-bottom:7px}
+.practice-item{display:flex;gap:8px;align-items:flex-start;margin-bottom:6px;font-size:12px;color:#412402;line-height:1.5}
+.practice-item:last-child{margin-bottom:0}
+.practice-num{font-size:11px;font-weight:500;padding:1px 6px;border-radius:20px;background:#EF9F27;color:#fff;white-space:nowrap;flex-shrink:0;margin-top:1px}
+
+.practice-block{background:#FFF8EE;border:1px solid #F5C175;border-radius:8px;padding:11px 13px;margin:10px 0}
+.practice-hdr{font-size:10px;font-weight:500;color:#854F0B;letter-spacing:.5px;text-transform:uppercase;margin-bottom:7px}
+.practice-meta{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.practice-badge{font-size:10px;font-weight:500;padding:2px 8px;border-radius:20px;background:#FAEEDA;color:#412402;white-space:nowrap}
+.practice-dur{font-size:11px;color:#854F0B}
+.practice-task-list{margin:6px 0 8px}
+.practice-task{font-size:12px;color:#3d3d3a;margin-bottom:5px;padding-left:14px;position:relative;line-height:1.5}
+.practice-task::before{content:"\2192";position:absolute;left:0;color:#BA7517;font-weight:500}
+.practice-task b{font-weight:500;color:#1a1a18}
+.practice-deliverable{background:#FAEEDA;border:0.5px solid #F5C175;border-radius:6px;padding:7px 10px;font-size:12px;color:#633806;line-height:1.5}
+.practice-deliverable b{font-weight:500}
+.practice-link{display:inline-flex;align-items:center;font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid #F5C175;color:#854F0B;background:#FFF8EE;margin:3px 3px 0 0;text-decoration:none}
+.practice-link:hover{background:#FAEEDA;color:#412402}
 </style>
 </head>
 <body>
@@ -117,6 +137,39 @@ pre{background:#f1efe8;border:1px solid #d3d1c7;border-radius:8px;padding:10px 1
 <div id="week-content"></div>
 
 <script>
+const practiceData = {
+'0-0-0':{badge:'Google Cloud Skills Boost',labName:'Cloud IAM: Qwik Start',labUrl:'https://www.cloudskillsboost.google/focuses/44159',extra:[{name:'Google Codelabs: Cloud Shell',url:'https://codelabs.developers.google.com/codelabs/cloud-shell'}],dur:'60 min',tasks:['<b>Lab first:</b> Complete Cloud IAM Qwik Start (30 min sandboxed environment)','Create 3 service accounts in YOUR project: <code>bq-loader</code>, <code>pubsub-publisher</code>, <code>dataflow-worker</code> with minimum required roles only','Test least privilege: log in as bq-loader and attempt to delete a BQ dataset — read the exact error message','Run <code>gcloud projects get-iam-policy $PROJECT_ID --format=json</code> — find your SA bindings in the JSON output','Enable APIs via CLI and verify: <code>gcloud services list --enabled | grep -E "bigquery|pubsub|dataflow|composer"</code>'],deliverable:'Notes doc has: exact error message from least-privilege test + table mapping each SA to its role and WHY that role (not editor/owner)'},
+'0-0-1':{badge:'Google Cloud Skills Boost',labName:'Cloud Storage: Qwik Start',labUrl:'https://www.cloudskillsboost.google/focuses/1760',extra:[{name:'GCS lifecycle rule examples',url:'https://cloud.google.com/storage/docs/lifecycle#examples'}],dur:'45 min',tasks:['<b>Lab first:</b> Complete the GCS Qwik Start lab (25 min sandboxed)','Create bronze/silver/gold buckets with the correct storage class for each layer','Apply 30-day lifecycle to bronze — verify with <code>gsutil lifecycle get gs://your-bucket-bronze</code>','Upload a test file to each bucket. Run <code>gsutil du -sh gs://your-bucket-*</code> to see sizes','Change bronze to Nearline storage class — calculate the cost difference using GCS pricing page','Run <code>gsutil ls -L gs://your-bucket-bronze/test.txt</code> and find the storage class in metadata'],deliverable:'Screenshot of 3 buckets in Console + note: "bronze is [class] because [reason], gold is Standard because [reason]"'},
+'0-1-0':{badge:'BigQuery Sandbox (free)',labName:'BigQuery: Qwik Start - Console',labUrl:'https://www.cloudskillsboost.google/focuses/1145',extra:[{name:'BQ pricing calculator',url:'https://cloud.google.com/bigquery/pricing#on_demand_pricing'},{name:'BQ public datasets explorer',url:'https://console.cloud.google.com/bigquery?p=bigquery-public-data'}],dur:'60 min',tasks:['<b>Lab first:</b> Complete BQ Qwik Start Console lab (20 min)','Open BigQuery sandbox. Before running each query, read the byte estimate (top right). Record it.','<b>Q1:</b> SELECT * LIMIT 100. Note bytes. <b>Q2:</b> SELECT trip_id, fare LIMIT 100. Note bytes. Calculate the ratio — does it match the column fraction?','<b>Q3:</b> Find the busiest hour of day using EXTRACT(HOUR FROM trip_start_timestamp). GROUP BY hour.','<b>Q4:</b> Calculate average fare per mile for trips under 10 miles. Use NULLIF to handle zero-mile trips.','Run EXPLAIN on one query — screenshot the execution plan. How many stages? How many workers?'],deliverable:'Table in notes: Query | Bytes scanned | Cost estimate. Plus answer: "Peak taxi hour is ___ with ___ trips"'},
+'0-1-1':{badge:'StrataScratch + Mode Analytics',labName:'SQL Window Functions challenges',labUrl:'https://platform.stratascratch.com/coding?code_type=1',extra:[{name:'Mode Analytics SQL tutorial',url:'https://mode.com/sql-tutorial/sql-window-functions/'},{name:'SQLZoo window functions',url:'https://sqlzoo.net/wiki/Window_functions'}],dur:'75 min',tasks:['<b>StrataScratch:</b> Solve "Ranking Most Active Guests" — uses RANK() OVER (ORDER BY). Solve without hints first.','In BigQuery: find for each taxi_id the trip where they earned the most — ROW_NUMBER() OVER (PARTITION BY taxi_id ORDER BY fare DESC) = 1','Write a 7-day rolling average of daily trip counts: AVG() OVER (ORDER BY trip_date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW)','<b>Hard:</b> Find taxis where the most recent fare was more than 2x their average — uses LAG() + subquery','<b>Self-test:</b> Cover your query and re-type RANK(), DENSE_RANK(), ROW_NUMBER() side by side from memory. Check output matches.'],deliverable:'4 working queries in notes doc + note which was hardest and why'},
+'0-1-2':{badge:'Mode Analytics SQL Tutorial',labName:'CTEs + ELT pattern practice',labUrl:'https://mode.com/sql-tutorial/sql-cte/',extra:[{name:'dbt Blog: Modular data modeling',url:'https://www.getdbt.com/analytics-engineering/modular-data-modeling-technique/'}],dur:'60 min',tasks:['<b>Mode Analytics:</b> Complete the CTE tutorial section interactively (free account)','<b>Re-write challenge:</b> Type the 4-CTE chain from scratch WITHOUT looking at your notes. Prompt: "clean → daily stats → company averages → top 10 by fare"','<b>Extend:</b> Add a 5th CTE using LAG() to compare each company vs the previous month','<b>ELT mapping:</b> Draw a table — CTE name | dbt model name | medallion layer | what it does. Fill for all 5 CTEs.','<b>Readability test:</b> Re-write the same logic as nested subqueries. Compare. Write which is better and why in your notes.'],deliverable:'5-CTE query working in BigQuery + ELT mapping table in notes doc'},
+'0-1-3':{badge:'BigQuery Public Datasets',labName:'UNNEST + nested JSON drills',labUrl:'https://console.cloud.google.com/bigquery?p=githubarchive',extra:[{name:'BQ docs: Nested and repeated data',url:'https://cloud.google.com/bigquery/docs/nested-repeated'}],dur:'60 min',tasks:['<b>Inspect first:</b> SELECT payload FROM githubarchive.month.202301 WHERE type="PushEvent" LIMIT 3 — study JSON structure before writing UNNEST','<b>Drill 1:</b> Top 10 repos by commit count in Jan 2023 — UNNEST commits, GROUP BY repo.name','<b>Drill 2:</b> Most common first word of commit messages — UNNEST, extract SPLIT(commit.message," ")[SAFE_OFFSET(0)], GROUP BY','<b>Drill 3 (LEFT JOIN UNNEST):</b> Find PushEvents with ZERO commits — use LEFT JOIN UNNEST, filter WHERE commit IS NULL','<b>Simulate Pub/Sub payload:</b> CREATE TABLE taxi_lab.test_nested (id INT64, metadata STRUCT<source STRING, tags ARRAY<STRING>>). Insert a row and UNNEST it.'],deliverable:'3 working UNNEST queries + CREATE TABLE/INSERT for synthetic nested table + note: difference between LEFT JOIN UNNEST and comma UNNEST on empty arrays'},
+'0-2-0':{badge:'BigQuery Sandbox',labName:'Partitioning + clustering cost lab',labUrl:'https://console.cloud.google.com/bigquery',extra:[{name:'Google Codelabs: Using BigQuery efficiently',url:'https://codelabs.developers.google.com/codelabs/bigquery-optimization'},{name:'BQ partition decorator docs',url:'https://cloud.google.com/bigquery/docs/partitioned-tables#partition_decorators'}],dur:'75 min',tasks:['<b>4-query cost comparison (note bytes for each):</b>','Q1: Query WITHOUT date filter + WITHOUT company filter','Q2: Query WITH date filter only (2023)','Q3: Query WITH date filter + company cluster filter','Q4: Same Q3 on the original UN-partitioned public table — confirm it costs more','<b>Build a second table</b> partitioned by company — observe the high-cardinality error. Write WHY partitioning by company fails.','Use INFORMATION_SCHEMA.PARTITIONS to find which date has most rows and which has zero rows.'],deliverable:'4-row cost table in notes: Query type | Bytes scanned | % vs baseline. Answer: "Partitioning saved X%, clustering saved additional Y%"'},
+'0-2-1':{badge:'BigQuery Sandbox + dbt Docs',labName:'Data quality SQL drills',labUrl:'https://docs.getdbt.com/docs/build/tests',extra:[{name:'Great Expectations: What are expectations?',url:'https://docs.greatexpectations.io/docs/core/introduction/expectations'}],dur:'60 min',tasks:['<b>4-pillar DQ sweep on GitHub Archive dataset (new dataset — different from taxi):</b>','VOLUME: Count PushEvents per day for Jan 2023 — find any day with unusually low count','NULLS: Check null rates for actor.login, repo.name, payload — which has highest null rate?','DISTRIBUTION: p50/p95/p99 of ARRAY_LENGTH(payload.commits) — any outliers with 100+ commits?','DUPLICATES: Check if any (actor.login, created_at) pair appears more than once','<b>Reusable pattern:</b> Write your 4 DQ checks as a template you can copy to any new dataset. This becomes your go-to on the project.'],deliverable:'DQ sweep results for GitHub Archive + reusable 4-check template in notes doc'},
+'0-3-0':{badge:'Excalidraw (free)',labName:'Architecture draw + teach-back',labUrl:'https://excalidraw.com/',extra:[{name:'GCP architecture diagramming tool',url:'https://cloud.google.com/architecture/diagramming-tool'},{name:'Anki flashcards app',url:'https://apps.ankiweb.net/'}],dur:'60 min',tasks:['<b>Excalidraw:</b> Draw Week 1 full architecture from memory — GCS layers → BQ → columnar → partitions → CTEs','<b>Teach-back:</b> Record yourself (phone camera) explaining the diagram in 3 minutes. Watch it back. Note any hesitation.','<b>Gap test 1:</b> "Why does SELECT * on a 1TB BQ table cost 50x more than SELECT two_columns?" — write 3-sentence answer without notes.','<b>Gap test 2:</b> "A teammate wants to run analytics on the production Postgres DB. What do you tell them?" — write your answer.','Create 5 Anki flashcards for your shakiest concepts — these go into a daily review deck for weeks 2-6.'],deliverable:'Excalidraw diagram saved as PNG + 5 flashcards created + notes doc complete with genuine surprises and gaps'},
+'1-0-0':{badge:'Google Cloud Skills Boost',labName:'Pub/Sub: Qwik Start - Command Line',labUrl:'https://www.cloudskillsboost.google/focuses/925',extra:[{name:'Pub/Sub interactive overview',url:'https://cloud.google.com/pubsub/docs/pubsub-basics'},{name:'Kafka vs Pub/Sub comparison',url:'https://cloud.google.com/pubsub/docs/migrating-from-kafka-to-pubsub'}],dur:'60 min',tasks:['<b>Lab first:</b> Complete Pub/Sub Qwik Start CLI lab (25 min sandboxed)','Create your topic + subscription. Publish 10 messages with attributes: <code>--attribute="city=Bangkok,priority=high"</code>','<b>Ack deadline experiment:</b> Pull 3 messages WITHOUT --auto-ack. Wait 65 seconds. Pull again — same 3 messages reappear. Draw the message lifecycle.','<b>Push subscription:</b> Create a push subscription to webhook.site (free endpoint) — publish a message and confirm webhook.site received it.','Go to GCP Console → Pub/Sub → Metrics. Publish 50 messages without consuming. Watch the backlog chart grow.'],deliverable:'Message lifecycle drawing in notes + webhook.site screenshot proving push delivery + answer: "What is the max ack deadline and why set it high?"'},
+'1-0-1':{badge:'Python + GCP',labName:'Real event producer build',labUrl:'https://cloud.google.com/pubsub/docs/publisher',extra:[{name:'Open-Meteo free weather API',url:'https://open-meteo.com/en/docs'},{name:'wttr.in API docs',url:'https://github.com/chubin/wttr.in#one-line-output'}],dur:'90 min',tasks:['<b>Run producer.py for 3 minutes.</b> Count messages landed in Pub/Sub.','<b>Extend:</b> Add a second city (Singapore) — loop through city list, publish one event per city per cycle.','<b>Add retry logic:</b> wttr.in sometimes fails. Add exponential backoff: retry after 1s, 2s, 4s. Log each retry attempt.','<b>Add ordering key:</b> Set ordering_key=city when publishing — all Bangkok events will be ordered. Read the docs for enabling ordered delivery on subscription.','<b>Rate measurement:</b> Add time.time() logging to measure actual throughput vs intended throughput. Note the difference.'],deliverable:'Extended producer.py with 2 cities + retry logic + ordering key. Screenshot of GCP Pub/Sub message count graph.'},
+'1-1-0':{badge:'Python + GCP',labName:'Consumer reliability drill',labUrl:'https://cloud.google.com/pubsub/docs/dead-letter-topics',extra:[{name:'Exactly-once delivery in Pub/Sub',url:'https://cloud.google.com/pubsub/docs/exactly-once-delivery'},{name:'Idempotency patterns (ByteByteGo)',url:'https://www.youtube.com/results?search_query=idempotency+patterns+bytebytego'}],dur:'75 min',tasks:['Run subscriber.py and confirm it receives messages.','<b>Failure sim 1 — delay:</b> Add time.sleep(70) BEFORE message.ack() — longer than ack_deadline. Watch redelivery without crashing.','<b>Failure sim 2 — exception:</b> Raise Exception for city=="Bangkok" messages. Configure DLQ with max_delivery_attempts=3. Pull from DLQ — check delivery_attempt attribute.','<b>Idempotent design:</b> Write the SQL pattern safe to run twice: INSERT ... ON CONFLICT DO NOTHING. Note why this matters for at-least-once systems.','Draw the at-least-once delivery timeline: publish → deliver → crash before ack → redeliver → ack. Mark where idempotency protects you.'],deliverable:'subscriber.py with crash simulation + DLQ screenshot showing delivery_attempt=3 + idempotent INSERT SQL pattern in notes'},
+'1-2-0':{badge:'GCP Console + CLI',labName:'Pub/Sub → BigQuery subscription lab',labUrl:'https://cloud.google.com/pubsub/docs/bigquery',extra:[{name:'Schema registry concepts (Confluent)',url:'https://docs.confluent.io/platform/current/schema-registry/fundamentals/index.html'}],dur:'75 min',tasks:['Configure BQ direct subscription. Run producer 2 min. Query weather_raw — confirm rows landing.','<b>Schema mismatch test:</b> Add "feels_like_c" field to producer WITHOUT enabling ALLOW_FIELD_ADDITION. Publish 5 events. Check dead-letter — schema-mismatched messages should appear.','Enable ALLOW_FIELD_ADDITION. Republish. Confirm new field lands in BQ.','Go to Pub/Sub Metrics — find subscription/dead_letter_message_count. Confirm 5 rejected messages before fix.','Write a BQ query: first and last ingested_at timestamp in weather_raw — pipeline uptime window.','Draw schema evolution timeline: v1 producer → v2 producer. Mark where breaking changes happen without ALLOW_FIELD_ADDITION.'],deliverable:'Screenshot of weather_raw with rows + dead-letter count metric + schema evolution timeline drawing in notes'},
+'1-3-0':{badge:'Self-assessment + Kleppmann',labName:'Streaming concepts synthesis',labUrl:'https://www.youtube.com/results?search_query=making+sense+of+stream+processing+Martin+Kleppmann',extra:[{name:'Pub/Sub glossary',url:'https://cloud.google.com/pubsub/docs/overview#concepts'}],dur:'60 min',tasks:['<b>Watch Martin Kleppmann GOTO talk (45 min)</b> — answer: what is the connection between a DB write-ahead log and a Pub/Sub topic?','<b>Kafka ↔ Pub/Sub map:</b> 2-column table — Kafka term | Pub/Sub equivalent. Cover: topic, consumer group, offset, DLQ, partition, retention.','<b>Production scenarios (answer in notes):</b> (1) Producer 1000/s, subscriber 800/s — what grows? (2) Subscriber crashes at msg 500 — which messages reprocess? (3) Two subscribers on same topic — shared or independent copies?','Draw Week 2 architecture from memory with: at-least-once label, schema evolution risk point, DLQ location.','Decision framework: when direct BQ subscription vs Dataflow between Pub/Sub and BQ?'],deliverable:'Kafka ↔ Pub/Sub table + 3 scenario answers + architecture diagram + decision framework — all in notes'},
+'2-0-0':{badge:'dbt Learn (free course)',labName:'dbt Fundamentals — Modules 1 & 2',labUrl:'https://learn.getdbt.com/courses/dbt-fundamentals',extra:[{name:'dbt Cloud free developer tier',url:'https://cloud.getdbt.com/'}],dur:'75 min',tasks:['<b>dbt Learn:</b> Complete Module 1 (What is dbt?) and Module 2 (Models) including interactive exercises','Run <code>dbt init de_lab</code>. Run <code>dbt debug</code>. Fix any errors before moving on.','After <code>dbt run --select stg_weather</code>, open <code>target/compiled/</code> — read the actual SQL dbt sent to BQ. This is what ref() resolved to.','<b>ref() experiment:</b> Hardcode the source table instead of source(). Run dbt docs generate. Confirm lineage graph breaks. Revert.','Add a second staging model <code>stg_weather_hourly.sql</code> reading from ref("stg_weather"). Run dbt run — confirm 2 models appear in BQ.','Run dbt docs generate && dbt docs serve — screenshot the lineage graph.'],deliverable:'Lineage graph screenshot with 2 nodes + compiled SQL from target/compiled/ in notes + answer: "What does ref() compile to at runtime?"'},
+'2-1-0':{badge:'dbt Learn (free course)',labName:'dbt Fundamentals — Modules 3 & 4',labUrl:'https://learn.getdbt.com/courses/dbt-fundamentals',extra:[{name:'Kimball dimensional modeling guide',url:'https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/'},{name:'dbt project structure guide',url:'https://docs.getdbt.com/best-practices/how-we-structure/1-guide-overview'}],dur:'75 min',tasks:['<b>dbt Learn:</b> Complete Modules 3 (Tests) and 4 (Documentation)','Build stg_ → int_ → mart_ stack. After dbt run confirm all 3 exist in BigQuery.','<b>Materialisation experiment:</b> Change mart_weather_daily from view to table in dbt_project.yml. Run dbt run. Query cost: which is cheaper to query?','<b>Dimensional modeling:</b> Identify fact vs dimension tables in your weather data. Draw a star schema even with one model.','Add description: fields to every column in schema.yml. Confirm they appear in dbt docs UI.','Test the ref() chain: in mart model, add a column referencing int_weather_hourly. Run dbt compile — confirm the generated SQL resolves correctly.'],deliverable:'All 3 models as tables in BQ + star schema drawing in notes + full schema.yml with column descriptions'},
+'2-2-0':{badge:'dbt Cloud (free dev tier)',labName:'Data testing + contract enforcement',labUrl:'https://cloud.getdbt.com/',extra:[{name:'dbt-utils package',url:'https://hub.getdbt.com/dbt-labs/dbt_utils/latest/'},{name:'Data contract specification',url:'https://datacontract.com/'}],dur:'75 min',tasks:['Run <code>dbt test</code> — confirm all pass before starting.','<b>Break 1 (null):</b> UPDATE weather_raw SET city=NULL LIMIT 1 in BQ. Run dbt test. Fix in stg_weather with WHERE clause. Re-run until green.','<b>Break 2 (duplicate):</b> INSERT duplicate row. Run dbt test. Fix with QUALIFY ROW_NUMBER() in staging model.','<b>Break 3 (bad value):</b> INSERT row with temp_c=999. Add accepted range test if not already there.','<b>dbt-utils:</b> Add to packages.yml, run dbt deps. Use dbt_utils.expression_is_true to check daily_avg_temp_c BETWEEN -20 AND 60.','Write a data contract paragraph: "mart_weather_daily guarantees: [5 things]". Real artifact for a project.'],deliverable:'3 break-fix cycles documented + dbt-utils tests added + data contract paragraph for mart_weather_daily'},
+'2-3-0':{badge:'Self-assessment',labName:'dbt mental model synthesis',labUrl:'https://discourse.getdbt.com/',extra:[{name:'dbt Community Slack',url:'https://www.getdbt.com/community/join-the-community'}],dur:'60 min',tasks:['Draw from memory: full dbt DAG — source → stg_ → int_ → mart_. Label ref() arrows, test points, materialisation types.','<b>Quiz (no notes):</b> (1) What does dbt run execute in BQ? (2) View vs table materialisation — when to use each? (3) If int_ fails, which models are blocked?','<b>Code review:</b> Find 3 problems in this model: SELECT * FROM raw.weather_raw WHERE temp_c > 0','<b>Schema drift test:</b> Add a column to weather_raw that stg_weather does not select — does dbt break? Remove a column — does dbt break? Test both.','Browse dbt Discourse — find one real production problem you have NOT encountered but could. Summarise it in your notes.'],deliverable:'dbt DAG drawing + 3 quiz answers + schema drift experiment results + dbt Discourse problem summary in notes'},
+'3-0-0':{badge:'Apache Beam Playground',labName:'Beam interactive coding',labUrl:'https://play.beam.apache.org/',extra:[{name:'Google Cloud Skills Boost: Dataflow Qwik Start',url:'https://www.cloudskillsboost.google/focuses/1100'},{name:'Beam programming guide',url:'https://beam.apache.org/documentation/programming-guide/'}],dur:'75 min',tasks:['<b>Beam Playground:</b> Open play.beam.apache.org → Python → WordCount. Run it. Then modify: count character frequency instead of words.','Add a second branch in Beam Playground: fork one PCollection into two paths — understand that PCollections can have multiple consumers.','Run local_pipeline.py. Add beam.Filter to remove events where humidity > 90. Verify filtered events do not appear in output.','<b>Error handling:</b> Deliberately pass non-JSON into pipeline. Confirm crash. Add try/except + TaggedOutput to route errors to separate PCollection.','Compare: write word-count as a Python script vs Beam pipeline. How many lines? Which scales to 1TB? Write the comparison.'],deliverable:'Modified local_pipeline.py with filter + error side-output + Pandas vs Beam comparison table in notes'},
+'3-1-0':{badge:'Google Cloud Skills Boost',labName:'Dataflow: Qwik Start - Python',labUrl:'https://www.cloudskillsboost.google/focuses/1100',extra:[{name:'Dataflow pricing calculator',url:'https://cloud.google.com/products/calculator'},{name:'Beam windowing visual guide',url:'https://beam.apache.org/documentation/programming-guide/#windowing'}],dur:'90 min',tasks:['<b>Lab first:</b> Complete Dataflow Qwik Start Python (30 min)','Deploy streaming_pipeline.py. While starting, open Dataflow UI and watch the job graph appear.','<b>Window experiment:</b> Change FixedWindows(60) → FixedWindows(30) — row count changes? Try SlidingWindows(60,30) — why ~2x rows?','<b>Autoscaling:</b> Run volume spike script (500 messages). Watch worker count in Dataflow UI. Note time to scale up.','<b>Cost check:</b> After 10 min, check Dataflow job details — vCPU usage. Estimate hourly cost with pricing calculator.','Watch System Lag metric. Publish 1000 messages instantly — watch lag spike then drop as workers catch up.'],deliverable:'Dataflow job graph screenshot + worker count before/after spike + cost estimate + system lag observation in notes'},
+'3-2-0':{badge:'GCP Console + Stackdriver',labName:'Dataflow failure diagnosis drill',labUrl:'https://cloud.google.com/dataflow/docs/guides/troubleshooting-your-pipeline',extra:[{name:'Cloud Logging query language',url:'https://cloud.google.com/logging/docs/view/logging-query-language'},{name:'SRE Workbook: Incident response',url:'https://sre.google/workbook/incident-response/'}],dur:'75 min',tasks:['<b>Failure 1:</b> Publish malformed message. Find error in Stackdriver: <code>resource.type="dataflow_step" severity=ERROR</code>. Confirm pipeline keeps running.','<b>Failure 2:</b> Publish 500 messages fast. In Cloud Monitoring add dataflow/job/system_lag chart. Watch spike and recovery. Note recovery time.','<b>Failure 3 (OOM sim):</b> In ParseAndEnrich add: <code>_ = [0] * 10_000_000</code>. Deploy. Watch worker restart. Find OOM in logs.','<b>Build personal runbook:</b> For each failure: "Alert indicator | Stackdriver filter | Likely cause | Fix steps"','Write 3 Stackdriver log filter queries: errors only, specific job only, last hour only. Confirm each works.','Map 4 golden signals to Dataflow metrics: latency=?, traffic=?, errors=?, saturation=?'],deliverable:'Personal runbook with 3 failure types + 3 working log filter queries + 4 golden signals mapping table — all in notes'},
+'3-3-0':{badge:'Self-assessment + DDIA',labName:'Distributed processing synthesis',labUrl:'https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/',extra:[{name:'Dataflow vs Spark (official)',url:'https://cloud.google.com/dataflow/docs/resources/faq'},{name:'Beam Summit talks playlist',url:'https://www.youtube.com/results?search_query=beam+summit+2023+playlist'}],dur:'60 min',tasks:['Draw from memory: Beam pipeline DAG (PCollection → PTransform → stages → workers). What is the Spark equivalent of each?','<b>Quiz (no notes):</b> (1) Why Dataflow vs direct BQ subscription? (2) What if all workers crash? (3) What happens to late events in FixedWindows by default?','<b>Windowing visual:</b> Draw timeline with events at 0s,10s,25s,75s,90s,130s. Draw FixedWindows(60) boundaries. Draw SlidingWindows(60,30). Which events appear in multiple windows?','Cost model quiz: estimate monthly cost for 24/7 Dataflow job with 2 workers at the rates you recorded.','Draw full Weeks 1-4 pipeline from memory — all components labeled. This is your interview architecture diagram.'],deliverable:'Full Weeks 1-4 architecture diagram + windowing timeline drawing + Beam vs Spark comparison table in notes'},
+'4-0-0':{badge:'Google Cloud Skills Boost',labName:'Cloud Composer: Qwik Start',labUrl:'https://www.cloudskillsboost.google/focuses/2673',extra:[{name:'Astronomer Academy free courses',url:'https://academy.astronomer.io/'},{name:'Airflow best practices',url:'https://docs.astronomer.io/learn/dag-best-practices'}],dur:'75 min',tasks:['<b>Lab first:</b> Complete Cloud Composer Qwik Start (30 min). While YOUR environment provisions (25 min), complete Astronomer Academy "Intro to Airflow".','Deploy hello_dag.py. Click a task instance → View Logs. Copy the log URL format — use it in your runbook.','<b>Backfill experiment:</b> Change catchup=True. Restart. Watch Airflow try to run ALL missed executions. Then revert to False.','<b>XCom experiment:</b> Modify print_hello to return "hello from {execution_date}". Add a task that reads this with xcom_pull(). Confirm value passes.','Map Airflow to CI/CD: DAG=?, Task=?, Operator=?, Scheduler=?, XCom=? Draw the table.'],deliverable:'Running hello_dag + XCom task pair + CI/CD mapping table in notes + screenshot of successful Airflow UI'},
+'4-1-0':{badge:'Astronomer Academy + GCP',labName:'Full pipeline DAG build',labUrl:'https://academy.astronomer.io/',extra:[{name:'Airflow task groups (advanced)',url:'https://docs.astronomer.io/learn/task-groups'}],dur:'90 min',tasks:['Build weather_pipeline_dag.py. Deploy. Trigger manually. Screenshot the Graph View — this is your pipeline architecture in code form.','<b>Failure cascade test:</b> Set row count threshold to 10000 (guaranteed fail). Trigger DAG. Confirm: ingest succeeds → validate fails → dbt_stg never runs.','<b>Sensor experiment:</b> Replace validate with BigQueryTablePartitionExistenceSensor. Observe difference — sensors poll repeatedly vs tasks execute once.','<b>Parameterised run:</b> Add Admin → Variables in UI: MIN_ROW_COUNT=5. Modify validate to read this variable. Change value and rerun.','Time yourself: add a new task to an existing DAG and deploy. Note your deployment velocity.'],deliverable:'weather_pipeline_dag.py running end-to-end + failure cascade screenshot + variable in UI + deployment time in notes'},
+'4-2-0':{badge:'Airflow UI + SRE concepts',labName:'Failure handling + runbook',labUrl:'https://airflow.apache.org/docs/apache-airflow/stable/administration-and-deployment/logging-monitoring/callbacks.html',extra:[{name:'Airflow SLA miss detection',url:'https://docs.astronomer.io/learn/airflow-sla-misses'}],dur:'75 min',tasks:['Add on_failure_alert callback. Trigger a failure. Confirm callback message appears in logs.','<b>SLA experiment:</b> Add sla=timedelta(minutes=2) to dbt_mart. Add time.sleep(130) to run_producer. Trigger — observe SLA miss alert in Airflow UI.','<b>Retry visualization:</b> retries=3, retry_delay=timedelta(seconds=5) on validate. Make it fail. Watch 3 retries. Note total elapsed time.','<b>Clear and rerun:</b> After failure, use "Clear task state" on ONLY the failed task. Confirm upstream tasks do NOT rerun.','Write complete runbook: 5 failure types, each with alert indicator + diagnostic command + fix steps + escalation path.'],deliverable:'5-scenario runbook in notes + SLA miss screenshot + clear/rerun demonstration screenshot'},
+'4-3-0':{badge:'Self-assessment',labName:'Orchestration synthesis',labUrl:'https://www.youtube.com/results?search_query=modern+data+orchestration+vs+airflow+prefect',extra:[{name:'Dagster vs Airflow comparison',url:'https://dagster.io/vs/airflow'}],dur:'60 min',tasks:['<b>Watch Prefect vs Airflow video (15 min).</b> Write 3 Airflow criticisms — are they valid from your week 5 experience?','Draw from memory: complete weather_pipeline DAG with all tasks, dependencies, retry counts, callbacks.','<b>Quiz (no notes):</b> (1) catchup=False prevents what? (2) Sensor vs regular task? (3) trigger_rule=ONE_FAILED does what? (4) XCom vs shared database?','<b>Design exercise:</b> Add a Slack notification task when mart_weather_daily > 1000 rows. Where in the DAG? What operator? Write the task definition.','Draw Weeks 1-5 complete pipeline — all components + Airflow DAG orchestrating all of them.'],deliverable:'Complete Weeks 1-5 architecture diagram + 4 quiz answers + Slack task design + Prefect criticism notes'},
+'5-0-0':{badge:'Great Expectations Docs + PyData',labName:'GX data quality implementation',labUrl:'https://docs.greatexpectations.io/docs/core/introduction/about_gx',extra:[{name:'GX Expectations Gallery',url:'https://greatexpectations.io/expectations/'},{name:'Elementary: dbt-native observability',url:'https://docs.elementary-data.com/'}],dur:'90 min',tasks:['Run gx_checks.py. Confirm all expectations pass. Print the full validation results object.','<b>Explore GX Gallery</b> — find 3 expectations you did not know existed. Add one to your gx_checks.py.','<b>Break 1:</b> Publish events with temp_c="999". Run gx_checks.py. Confirm distribution expectation fails.','<b>Break 2:</b> Delete half the rows from weather_raw. Confirm volume expectation fails — simulates partial pipeline failure.','<b>Integrate with Airflow:</b> Add as task BEFORE dbt_stg. Trigger DAG with bad data — confirm pipeline stops at GX gate.','Compare: for each of your 5 GX expectations, write "I could/could not replicate with dbt tests because [reason]"'],deliverable:'GX checkpoint in Airflow DAG + screenshot of pipeline stopping at GX gate + dbt vs GX comparison table in notes'},
+'5-1-0':{badge:'Google Cloud Skills Boost',labName:'Cloud Monitoring: Qwik Start',labUrl:'https://www.cloudskillsboost.google/focuses/10599',extra:[{name:'Cloud Monitoring dashboards gallery',url:'https://cloud.google.com/monitoring/dashboards/gallery'},{name:'SRE Workbook: Alerting on SLOs',url:'https://sre.google/workbook/alerting-on-slos/'}],dur:'75 min',tasks:['<b>Lab first:</b> Complete Cloud Monitoring Qwik Start (25 min)','Build 4-metric dashboard: Pub/Sub backlog, Dataflow system lag, BQ bytes, Composer parse time.','<b>Alert test:</b> Publish 2000 messages without consuming. Wait 5 min. Confirm backlog alert fires in Monitoring → Alerting → Incidents.','<b>SLO definition:</b> Define 3 SLOs for your pipeline — metric | threshold | window | alert condition.','Create a log-based metric counting Dataflow ERROR lines. Generate some errors. Watch the metric on your dashboard.','Write monitoring runbook: "If [alert X] fires, first check [metric Y], then [action Z]" for each of your 3 alerts.'],deliverable:'4-metric dashboard screenshot + 3 SLO definitions + log-based error metric on dashboard + monitoring runbook'},
+'5-2-0':{badge:'Looker Studio + Excalidraw',labName:'Serving layer + portfolio',labUrl:'https://lookerstudio.google.com/',extra:[{name:'GCP Architecture Diagrammer',url:'https://googlecloudcheatsheet.withgoogle.com/architecture'},{name:'Loom free screen recording',url:'https://www.loom.com/'}],dur:'90 min',tasks:['Build Looker Studio dashboard with 4 charts + city filter control following the exercise.','<b>Calculated field:</b> In Looker Studio add: CASE WHEN daily_avg_temp_c < 25 THEN "Cool" WHEN daily_avg_temp_c < 32 THEN "Warm" ELSE "Hot" END. Add to a chart.','Write architecture_doc.md. Use GCP Architecture Diagrammer or Excalidraw for the visual. Export as PNG.','For each tool choice (Pub/Sub, dbt, Dataflow, Composer) write a 2-sentence justification in the "Key decisions" section.','<b>Record 5-min Loom walkthrough:</b> Airflow DAG → BQ mart → Looker Studio → Cloud Monitoring. This is your portfolio artifact.','Note the Loom link in your doc. This is what you show a hiring manager or tech lead.'],deliverable:'Looker Studio dashboard with calculated field + architecture_doc.md + Loom recording link in your notes'},
+'5-3-0':{badge:'Self-directed + DataLemur',labName:'Gap sprint — 3 targeted drills',labUrl:'https://datalemur.com/',extra:[{name:'System design for data pipelines (ByteByteGo)',url:'https://www.youtube.com/results?search_query=data+pipeline+system+design+interview+bytebytego'}],dur:'240 min (3 days x 80 min)',tasks:['<b>Day 43:</b> Review ALL notes docs from weeks 1-5. List every "things I do not understand". Pick top 3 weak spots.','For each of 3 weak areas: (1) Find one focused resource. (2) Build a minimal exercise. (3) Write: "I understand X because I built Y and observed Z"','<b>Windowing drill (if weak):</b> Run FixedWindows(60) → SlidingWindows(60,30) → SessionWindows(gap=10). Count output rows for each. Explain why counts differ.','<b>dbt testing drill (if weak):</b> Write a custom dbt test as a macro checking no duplicate city+date in mart_weather_daily.','<b>Airflow XCom drill (if weak):</b> 3-task DAG — task1 returns number, task2 doubles via xcom_pull, task3 prints. Confirm value passes.','<b>Final exam:</b> Answer all 5 final checkpoint questions timed. Any hesitation > 30s = that topic needs more drilling.','<b>DataLemur:</b> Solve 3 SQL problems tagged "data engineering" — real interview questions from Airbnb, Stripe, Meta.'],deliverable:'3 gap areas documented + 3 targeted exercises completed + all 5 final checkpoint questions answered + 3 DataLemur solutions'}
+};
+
 const checks = {};
 
 const weeks = [
@@ -172,7 +225,12 @@ gcloud iam service-accounts keys create ./bq-loader-key.json \\
 
 export GOOGLE_APPLICATION_CREDENTIALS="./bq-loader-key.json"</pre>
 <div class="warn"><b>Gotcha:</b> <code>dataEditor</code> = write data. <code>jobUser</code> = run query jobs. You need BOTH. Missing jobUser gives a misleading permission denied that looks unrelated to data access.</div>
-<div class="checkpoint"><b>Checkpoint:</b> <code>gcloud services list --enabled | grep -E "bigquery|pubsub|dataflow"</code> — all three appear. Deliberately try a BQ query WITHOUT jobUser. Observe the error. You will never forget.</div>`
+<div class="checkpoint"><b>Checkpoint:</b> <code>gcloud services list --enabled | grep -E "bigquery|pubsub|dataflow"</code> — all three appear. Deliberately try a BQ query WITHOUT jobUser. Observe the error. You will never forget.</div>`,
+          practice:[
+            "Create a second SA called <code>dataflow-runner</code> and grant it <code>roles/dataflow.worker</code>. Verify with <code>gcloud projects get-iam-policy $PROJECT_ID --flatten=bindings --filter=bindings.members:dataflow-runner</code>.",
+            "Deliberately remove <code>roles/bigquery.jobUser</code> from bq-loader. Try running a BQ query. Record the exact error text. Re-add the role. This error message is one you WILL see on a real project.",
+            "List all enabled APIs: <code>gcloud services list --enabled --format='value(name)'</code>. Identify 2 APIs you enabled that you don't yet understand. Write them as 'to research' items in your notes.",
+          ]
         },
         {
           num:"Ex 2", nc:"#EEEDFE", nt:"#3C3489",
@@ -195,7 +253,12 @@ cat > lifecycle.json &lt;&lt; 'EOF'
 EOF
 gsutil lifecycle set lifecycle.json gs://$BUCKET-bronze</pre>
 <div class="notice"><b>Notice:</b> Only bronze gets auto-deletion at 30 days. Bronze = raw/temporary. Silver/gold = cleaned/permanent. Keep processed versions, not raw data forever.</div>
-<div class="checkpoint"><b>Checkpoint:</b> <code>echo "raw event" | gsutil cp - gs://$BUCKET-bronze/test.txt</code>. Explain in your notes: why is this bronze bucket equivalent to a data lake but not a data warehouse?</div>`
+<div class="checkpoint"><b>Checkpoint:</b> <code>echo "raw event" | gsutil cp - gs://$BUCKET-bronze/test.txt</code>. Explain in your notes: why is this bronze bucket equivalent to a data lake but not a data warehouse?</div>`,
+          practice:[
+            "Add a second lifecycle rule to bronze: move files to Nearline storage class after 7 days (before deleting at 30). Update lifecycle.json with two rules and re-apply. Verify: <code>gsutil lifecycle get gs://$BUCKET-bronze</code>.",
+            "Upload 3 different file types to bronze (.csv, .json, .txt). List all with sizes: <code>gsutil ls -l gs://$BUCKET-bronze/</code>. This mirrors how real bronze layers receive data from many source systems.",
+            "Manually copy a file from bronze to silver: <code>gsutil cp gs://$BUCKET-bronze/test.txt gs://$BUCKET-silver/test.txt</code>. Write in notes: is this the correct way to move data between layers? Why not? (Dataflow and dbt own this step — not manual gsutil.)",
+          ]
         }
       ]
     },
@@ -225,7 +288,12 @@ WHERE trip_start_timestamp >= '2023-01-01' LIMIT 100;
 SELECT trip_id, fare
 FROM \`bigquery-public-data.chicago_taxi_trips.taxi_trips\`
 WHERE trip_start_timestamp >= '2023-01-01' LIMIT 100;</pre>
-<div class="checkpoint"><b>Checkpoint:</b> Find top 5 payment types by average fare using GROUP BY. Then explain: why is this fast on BQ but slow on Postgres with 200M rows? Write the answer in your notes.</div>`
+<div class="checkpoint"><b>Checkpoint:</b> Find top 5 payment types by average fare using GROUP BY. Then explain: why is this fast on BQ but slow on Postgres with 200M rows? Write the answer in your notes.</div>`,
+          practice:[
+            "Write a query that finds p95 fare per payment_type using <code>APPROX_QUANTILES(fare, 100)[OFFSET(95)]</code>. Check the byte estimate BEFORE running. Is it more or less expensive than a simple AVG() on the same filter?",
+            "Run <code>SELECT *</code> vs <code>SELECT trip_id, fare, company</code> on the same WHERE clause. Screenshot both byte estimates and calculate the ratio. This ratio IS the cost penalty of not knowing which columns you need.",
+            "Find total revenue per company per month for H1 2023. Use <code>FORMAT_TIMESTAMP('%Y-%m', trip_start_timestamp)</code> and GROUP BY. Sort by month then revenue DESC. This is the most common analytical query pattern on any data project.",
+          ]
         },
         {
           num:"Ex 4", nc:"#E6F1FB", nt:"#0C447C",
@@ -257,7 +325,12 @@ SELECT
 FROM \`bigquery-public-data.chicago_taxi_trips.taxi_trips\`
 WHERE taxi_id IS NOT NULL AND trip_start_timestamp >= '2023-06-01' LIMIT 200;</pre>
 <div class="warn"><b>Gotcha:</b> RANK: 1,1,3 on ties (skips). DENSE_RANK: 1,1,2 (no skip). ROW_NUMBER: always 1,2,3. Observe all three side by side. You will be asked the difference.</div>
-<div class="checkpoint"><b>Checkpoint:</b> Write from memory: running cumulative fare per company by month. SUM() OVER (PARTITION BY company ORDER BY month ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW). If you can write this without looking, it's in your muscle memory.</div>`
+<div class="checkpoint"><b>Checkpoint:</b> Write from memory: running cumulative fare per company by month. SUM() OVER (PARTITION BY company ORDER BY month ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW). If you can write this without looking, it's in your muscle memory.</div>`,
+          practice:[
+            "Write LEAD() — for each trip, find what the NEXT trip's fare will be for the same taxi. Compare side by side with your LAG() output. Write: what is LEAD useful for that LAG cannot do?",
+            "Write a running total from memory without looking: <code>SUM(fare) OVER (PARTITION BY company ORDER BY month ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)</code>. Time yourself. If it takes more than 60 seconds, keep practicing until it takes under 30.",
+            "Add <code>PERCENT_RANK() OVER (...)</code> to your RANK query. Observe: PERCENT_RANK returns 0.0 to 1.0. Write in notes: when would you use PERCENT_RANK vs RANK in a real dbt model?",
+          ]
         },
         {
           num:"Ex 5", nc:"#E6F1FB", nt:"#0C447C",
@@ -295,7 +368,12 @@ ranked AS (
 )
 SELECT * FROM ranked WHERE fare_rank <= 10 ORDER BY fare_rank;</pre>
 <div class="notice"><b>Notice:</b> cleaned = stg_ model, daily_stats = int_ model, company_agg = mart_ model, ranked = metric. In Week 3 you split each into its own .sql file. Logic is identical — dbt adds version control, tests, and lineage.</div>
-<div class="checkpoint"><b>Checkpoint:</b> Write in your notes: "Chicago taxi data was L (Loaded) into BQ by Google. My CTE chain is the T (Transform). My Pub/Sub producer in Week 2 will be the E (Extract)." If this makes sense, you understand the full ELT pattern.</div>`
+<div class="checkpoint"><b>Checkpoint:</b> Write in your notes: "Chicago taxi data was L (Loaded) into BQ by Google. My CTE chain is the T (Transform). My Pub/Sub producer in Week 2 will be the E (Extract)." If this makes sense, you understand the full ELT pattern.</div>`,
+          practice:[
+            "Add a 5th CTE to the existing chain that finds which company has the best combined score of high avg_daily_fare AND high avg_tip_pct. Define your own scoring formula. This is a real business metric design exercise.",
+            "Rewrite one CTE as a nested subquery instead of a named CTE. Run both — they produce identical results. Answer: which version would a junior DE find easier to debug in 6 months? This is why CTEs exist.",
+            "Write a brand new 3-CTE query completely from scratch: top 5 most frequent pickup-to-dropoff community_area routes, grouped by payment_type. Write each CTE name and its purpose BEFORE writing any SQL.",
+          ]
         },
         {
           num:"Ex 6", nc:"#E6F1FB", nt:"#0C447C",
@@ -318,7 +396,12 @@ SELECT repo.name, actor.login, commit.sha,
 FROM \`githubarchive.month.202301\`,
 UNNEST(payload.commits) as commit
 WHERE type = 'PushEvent' AND repo.name LIKE '%tensorflow%' LIMIT 100;</pre>
-<div class="checkpoint"><b>Checkpoint:</b> Count commits per author in tensorflow repos for Jan 2023 using GROUP BY + ORDER BY COUNT(*) DESC. Write this from memory. This pattern = how you query Pub/Sub JSON payloads in Week 4.</div>`
+<div class="checkpoint"><b>Checkpoint:</b> Count commits per author in tensorflow repos for Jan 2023 using GROUP BY + ORDER BY COUNT(*) DESC. Write this from memory. This pattern = how you query Pub/Sub JSON payloads in Week 4.</div>`,
+          practice:[
+            "Rewrite the UNNEST query using explicit <code>LEFT JOIN UNNEST(...) AS commit</code> syntax instead of the comma syntax. Confirm results are identical. Write: when would LEFT JOIN UNNEST preserve rows that the comma syntax would drop?",
+            "Find all repos in Jan 2023 where the same author committed more than 3 times in a single push event. Use UNNEST + GROUP BY commit.author.name + HAVING COUNT(*) > 3.",
+            "Compare <code>payload.commits[SAFE_OFFSET(10)]</code> vs <code>payload.commits[OFFSET(10)]</code> on a PushEvent with only 3 commits. SAFE_OFFSET returns NULL; OFFSET throws an error. Write: when do you use each in production?",
+          ]
         }
       ]
     },
@@ -352,7 +435,12 @@ SELECT COUNT(*), ROUND(SUM(fare),2)
 FROM \`$PROJECT_ID.taxi_lab.trips_partitioned\`
 WHERE DATE(trip_start_timestamp) BETWEEN '2023-01-01' AND '2023-12-31'
   AND company = 'Taxicab Insurance Agency Llc';</pre>
-<div class="checkpoint"><b>Checkpoint:</b> Write both byte amounts in your notes and calculate % cost saving. Then find partitions with zero rows via INFORMATION_SCHEMA.PARTITIONS — zero rows = silent pipeline failure.</div>`
+<div class="checkpoint"><b>Checkpoint:</b> Write both byte amounts in your notes and calculate % cost saving. Then find partitions with zero rows via INFORMATION_SCHEMA.PARTITIONS — zero rows = silent pipeline failure.</div>`,
+          practice:[
+            "Create a second version of trips_partitioned with NO clustering (partition only). Run the same query on both tables. Compare bytes scanned. Write the byte difference — this is the measurable value of clustering.",
+            "Use INFORMATION_SCHEMA.PARTITIONS to find the 3 largest partitions by total_logical_bytes. Which month had the most taxi trips? This is the data profiling query you run first on any unfamiliar dataset.",
+            "Run a query with WHERE company='X' only — no date filter. Check the query validator byte estimate. This is a full table scan. Now add a date filter. Compare bytes. Write the % reduction that partitioning gives you.",
+          ]
         },
         {
           num:"Ex 8", nc:"#E1F5EE", nt:"#085041",
@@ -391,7 +479,12 @@ FROM \`$PROJECT_ID.taxi_lab.trips_partitioned\`
 WHERE DATE(trip_start_timestamp) >= '2023-01-01'
 GROUP BY 1,2 HAVING COUNT(*) > 1 ORDER BY cnt DESC LIMIT 20;</pre>
 <div class="warn"><b>Gotcha:</b> You will find negative fares. Flag them, never delete. Delete from raw layer = unrecoverable. Filter in the transform layer (dbt staging model). This is one of the most important DE principles.</div>
-<div class="checkpoint"><b>Checkpoint:</b> Use LAG() on the daily volume query to find the date in 2023 with the biggest single-day trip count drop. This is a real anomaly detection pattern.</div>`
+<div class="checkpoint"><b>Checkpoint:</b> Use LAG() on the daily volume query to find the date in 2023 with the biggest single-day trip count drop. This is a real anomaly detection pattern.</div>`,
+          practice:[
+            "Write a FRESHNESS check: find if any partition in the last 7 days has zero rows using INFORMATION_SCHEMA.PARTITIONS. This is the first query you run when someone reports 'the dashboard looks wrong today.'",
+            "Write a SCHEMA check using INFORMATION_SCHEMA.COLUMNS: verify that taxi_id, fare, and trip_miles exist and have the correct data_types. Fail loudly if any column is missing or wrong type. This is how you detect upstream schema changes.",
+            "Use LAG() on your daily volume query to compute (today_count - yesterday_count) for every day in 2023. Find the 3 dates with the biggest drops. Look them up — are they holidays or real pipeline failures?",
+          ]
         }
       ]
     },
@@ -409,7 +502,12 @@ GROUP BY 1,2 HAVING COUNT(*) > 1 ORDER BY cnt DESC LIMIT 20;</pre>
           conceptQ:"Explain without notes in 2 minutes: data lake, data warehouse, lakehouse, OLTP vs OLAP, ETL vs ELT, columnar storage — and which GCP service represents each. This vocabulary is your Day 1 on the project currency.",
           body:`<div class="goal-box"><b>Goal:</b> Draw the full architecture from memory. Connect every concept from Week 1 into one diagram.</div>
 <div class="notice"><b>Drawing must show:</b> GCS bronze/silver/gold → BigQuery dataset → columnar storage on Colossus → partition structure → CTE chain mapping to medallion layers → INFORMATION_SCHEMA location</div>
-<div class="checkpoint"><b>Checkpoint:</b> Answer out loud: "A new team member asks why you have both GCS buckets AND BigQuery tables — aren't they storing the same data?" If you can answer clearly using lake vs warehouse theory, you are ready for Week 2.</div>`
+<div class="checkpoint"><b>Checkpoint:</b> Answer out loud: "A new team member asks why you have both GCS buckets AND BigQuery tables — aren't they storing the same data?" If you can answer clearly using lake vs warehouse theory, you are ready for Week 2.</div>`,
+          practice:[
+            "Explain the data lake vs data warehouse difference out loud in 60 seconds without notes. Record yourself (phone audio is fine). Play it back — would a non-technical stakeholder understand it?",
+            "Write all 4 DQ SQL check patterns from memory without referring to notes: volume (COUNT per day), nulls (COUNTIF IS NULL / COUNT*100), distribution (APPROX_QUANTILES + COUNTIF extremes), duplicates (GROUP BY + HAVING COUNT > 1).",
+            "Draw a BQ cost decision tree: given a new query, what 3 questions do you ask before running? (Which columns? Can partition filter be added? Is the table clustered on my WHERE columns?) Pin this above your monitor.",
+          ]
         }
       ]
     }
@@ -453,7 +551,12 @@ gcloud pubsub subscriptions pull $SUB --auto-ack --limit=5
 # Check subscription metrics
 gcloud pubsub subscriptions describe $SUB</pre>
 <div class="notice"><b>Notice:</b> The ack-deadline is 60 seconds. If a consumer pulls a message but doesn't acknowledge within 60s, Pub/Sub redelivers it. This is how at-least-once delivery works. Design your consumers to be idempotent.</div>
-<div class="checkpoint"><b>Checkpoint:</b> Publish 5 messages. Pull them WITHOUT --auto-ack. Wait 65 seconds. Pull again — the same 5 messages appear again. Write in your notes: what does this tell you about idempotent consumer design?</div>`
+<div class="checkpoint"><b>Checkpoint:</b> Publish 5 messages. Pull them WITHOUT --auto-ack. Wait 65 seconds. Pull again — the same 5 messages appear again. Write in your notes: what does this tell you about idempotent consumer design?</div>`,
+          practice:[
+            "Create a second subscription on the same topic with ack_deadline=30s. Publish 3 messages. Pull from BOTH subscriptions independently — confirm both receive all 3 messages. Write: why does this work?",
+            "Publish 5 messages. Pull them WITHOUT --auto-ack. Wait 65 seconds past the ack_deadline. Pull again — the same 5 reappear. Write in notes: what pattern must every consumer implement to handle redelivery safely?",
+            "Use <code>gcloud pubsub subscriptions seek</code> to reset your subscription's position to 30 minutes ago. Pull messages. Write: when would you use seek in a real pipeline recovery? (Answer: after a consumer bug is fixed and you need to reprocess.)",
+          ]
         },
         {
           num:"Ex 2", nc:"#E6F1FB", nt:"#0C447C",
@@ -514,7 +617,12 @@ if __name__ == "__main__":
             print(f"Error: {e}")
         time.sleep(10)</pre>
 <div class="notice"><b>Notice:</b> Each event is a complete self-contained JSON payload — not an ID that requires a database lookup. This is event-carried state transfer. Consumers can process the event without any external dependency.</div>
-<div class="checkpoint"><b>Checkpoint:</b> Run the producer for 2 minutes. Go to GCP Console → Pub/Sub → your topic → Messages. Confirm messages are arriving. Then check subscription backlog. If it's growing, your consumer isn't keeping up.</div>`
+<div class="checkpoint"><b>Checkpoint:</b> Run the producer for 2 minutes. Go to GCP Console → Pub/Sub → your topic → Messages. Confirm messages are arriving. Then check subscription backlog. If it's growing, your consumer isn't keeping up.</div>`,
+          practice:[
+            "Add Singapore as a second city to your producer. Alternate between Bangkok and Singapore on each publish. Run for 2 minutes. Pull and verify both cities appear correctly in the payload city field.",
+            "Add a <code>schema_version</code> field set to 'v1' to every event. This prepares you for the schema evolution exercise in Day 12. Publish 10 events and confirm the field appears when you pull.",
+            "Deliberately break the API URL. Confirm the try/except catches it, prints the error, and the producer keeps running. This resilience is mandatory — a producer that crashes on one bad API call stops all ingestion.",
+          ]
         }
       ]
     },
@@ -565,7 +673,12 @@ gcloud pubsub subscriptions modify-push-config $SUB \
 gcloud pubsub subscriptions create de-lab-deadletter-sub \
   --topic=de-lab-deadletter</pre>
 <div class="warn"><b>Crash simulation:</b> Comment out message.ack() in the callback. Run the subscriber. Publish 3 messages. Kill the subscriber (Ctrl+C). Wait 60s. Restart — the same 3 messages reappear. This is at-least-once delivery in action. Now uncomment ack() and understand why every consumer must be idempotent.</div>
-<div class="checkpoint"><b>Checkpoint:</b> Publish a message that deliberately fails (e.g. raise an Exception in callback without acking). After 5 attempts, check the dead-letter subscription. Pull the message. Write: what is the delivery_attempt attribute on the dead-letter message?</div>`
+<div class="checkpoint"><b>Checkpoint:</b> Publish a message that deliberately fails (e.g. raise an Exception in callback without acking). After 5 attempts, check the dead-letter subscription. Pull the message. Write: what is the delivery_attempt attribute on the dead-letter message?</div>`,
+          practice:[
+            "Set max_delivery_attempts to 3. Deliberately fail a message 3 times (comment out ack()). Confirm it lands in dead-letter after exactly 3 attempts. Check the <code>delivery_attempt</code> attribute value on the dead-letter message.",
+            "Write an idempotent callback: keep a Python set of processed message IDs. Before acking, check if the ID is already in the set. If yes, log 'duplicate detected' and ack without reprocessing. This is the exactly-once pattern on top of at-least-once.",
+            "Set ack_deadline to 10 seconds. Write a callback that sleeps for 15 seconds before acking. Observe the redelivery. This simulates a slow consumer and is the root cause of many 'messages appearing twice' production bugs.",
+          ]
         }
       ]
     },
@@ -604,7 +717,12 @@ SELECT
 FROM \`$PROJECT_ID.taxi_lab.weather_raw\`
 GROUP BY 1 ORDER BY 1 DESC LIMIT 10;</pre>
 <div class="warn"><b>Break it:</b> Add a new field to your producer payload (e.g. "feels_like_c"). Publish events. If ALLOW_FIELD_ADDITION is not set, new fields route to dead-letter. Enable it and observe the difference. This is schema evolution in practice.</div>
-<div class="checkpoint"><b>Checkpoint:</b> Draw from memory: producer → Pub/Sub topic → BigQuery subscription → BQ table. Label each arrow with what happens at that step (serialize, route, write). This diagram = your Week 2 architecture.</div>`
+<div class="checkpoint"><b>Checkpoint:</b> Draw from memory: producer → Pub/Sub topic → BigQuery subscription → BQ table. Label each arrow with what happens at that step (serialize, route, write). This diagram = your Week 2 architecture.</div>`,
+          practice:[
+            "Add <code>schema_version='v2'</code> to your producer. With ALLOW_FIELD_ADDITION OFF, publish events and check the dead-letter topic. Enable ALLOW_FIELD_ADDITION, republish, and verify the new field appears in BQ without breaking existing rows.",
+            "Publish a message where temp_c is an integer (32) instead of a string ('32'). Does it land in BQ or dead-letter? Write: why do type mismatches behave differently from extra fields in schema evolution?",
+            "Query weather_raw in BQ for rows where ingested_at IS NULL or city IS NULL. These are events that slipped through malformed. Write the SQL check — this becomes your first Great Expectations assertion in Week 6.",
+          ]
         }
       ]
     },
@@ -621,7 +739,12 @@ GROUP BY 1 ORDER BY 1 DESC LIMIT 10;</pre>
           conceptQ:"Draw from memory: producer → topic → subscription → consumer → BQ. Label at-least-once delivery, ack deadline, dead-letter, and schema evolution points on the diagram.",
           body:`<div class="goal-box"><b>Goal:</b> Synthesise Week 2. Map every Pub/Sub concept to the Kafka term it corresponds to. Write your notes doc entry.</div>
 <div class="notice"><b>Concept map to write:</b> Pub/Sub topic = Kafka topic | Subscription = Consumer group | Message ack = Offset commit | Dead-letter = DLQ | ack_deadline = session.timeout | ALLOW_FIELD_ADDITION = schema evolution</div>
-<div class="checkpoint"><b>Checkpoint:</b> Answer: "A producer publishes 1000 events/second. Your subscriber processes 800/second. What happens to the backlog? What is consumer lag? How would you detect this in Pub/Sub monitoring?" If you can answer this, you're ready for Week 3.</div>`
+<div class="checkpoint"><b>Checkpoint:</b> Answer: "A producer publishes 1000 events/second. Your subscriber processes 800/second. What happens to the backlog? What is consumer lag? How would you detect this in Pub/Sub monitoring?" If you can answer this, you're ready for Week 3.</div>`,
+          practice:[
+            "Draw the Pub/Sub → BQ architecture from memory without looking. Label: topic, subscription type, ack deadline, dead-letter trigger point, and schema evolution decision point.",
+            "Write the Kafka ↔ Pub/Sub term mapping table from memory as a 2-column table: topic, subscription, ack, ack_deadline, dead-letter, max_delivery_attempts. No looking at your notes.",
+            "Calculate: producer publishes 500 events in 10 seconds, subscriber processes 300/second. How many seconds until the backlog is fully consumed after the burst ends? Draw the backlog-over-time graph on paper.",
+          ]
         }
       ]
     }
@@ -687,7 +810,12 @@ sources:
 
 dbt run --select stg_weather
 dbt docs generate && dbt docs serve</pre>
-<div class="checkpoint"><b>Checkpoint:</b> After dbt run, query the stg_weather view in BigQuery. Confirm types are correct — temp_c is INT64, not STRING. The type casting in staging is what makes downstream models reliable.</div>`
+<div class="checkpoint"><b>Checkpoint:</b> After dbt run, query the stg_weather view in BigQuery. Confirm types are correct — temp_c is INT64, not STRING. The type casting in staging is what makes downstream models reliable.</div>`,
+          practice:[
+            "Run <code>dbt compile --select stg_weather</code>. Open <code>target/compiled/</code> and read the actual SQL dbt generated. Write: what did dbt add that you didn't write? (Hint: the source() reference becomes a full table path.)",
+            "Introduce a deliberate SQL syntax error in stg_weather.sql (remove a comma). Run dbt run. Read the error. Fix it. Run again. This error-read-fix loop is 50% of real daily dbt work.",
+            "Add stg_trips.sql: a second staging model sourcing from trips_partitioned (Week 1). Select taxi_id, company, trip_date, fare. Run <code>dbt run --select stg_trips</code>. Confirm the view appears in BQ.",
+          ]
         }
       ]
     },
@@ -738,7 +866,12 @@ FROM hourly GROUP BY 1,2 ORDER BY event_date DESC</pre>
 # Check the lineage graph:
 dbt docs generate && dbt docs serve
 # Navigate to lineage: stg_weather → int_weather_hourly → mart_weather_daily</pre>
-<div class="checkpoint"><b>Checkpoint:</b> In the dbt docs lineage graph, confirm the three-node DAG is visible. Click each node — confirm the compiled SQL is correct. The lineage graph is what you show a tech lead when they ask "how does data flow through our transforms?"</div>`
+<div class="checkpoint"><b>Checkpoint:</b> In the dbt docs lineage graph, confirm the three-node DAG is visible. Click each node — confirm the compiled SQL is correct. The lineage graph is what you show a tech lead when they ask "how does data flow through our transforms?"</div>`,
+          practice:[
+            "Add a 4th dbt model: mart_weather_city_ranking.sql — ranks cities by average daily temperature using ref('mart_weather_daily') and RANK() OVER(). Run dbt run and verify it appears in the lineage graph.",
+            "Add <code>{{ config(materialized='table') }}</code> to int_weather_hourly.sql. Run dbt run — BQ should now show a TABLE not a VIEW. Run again — dbt should REPLACE it. Write: when do you use table vs view materialization?",
+            "Run <code>dbt run --select +mart_weather_daily</code> (+ means run all upstream). Confirm 3 models ran in correct dependency order: stg → int → mart. This is how you safely rerun a subset without touching unrelated models.",
+          ]
         }
       ]
     },
@@ -797,7 +930,12 @@ VALUES ('weather_snapshot','Bangkok',CURRENT_TIMESTAMP(),'99','80','Sunny','10')
 dbt test  # unique test on ingested_at now fails
 # Fix: add QUALIFY ROW_NUMBER() deduplication to stg_weather</pre>
 <div class="warn"><b>Fix for duplicate:</b> Add to stg_weather staging model: QUALIFY ROW_NUMBER() OVER (PARTITION BY ingested_at, city ORDER BY ingested_at) = 1. This pattern — deduplication in staging — is the most common fix for real production data issues.</div>
-<div class="checkpoint"><b>Checkpoint:</b> Run dbt test --select stg_weather. See one test fail. Fix it. Run again — all pass. Write in your notes: what would break in mart_weather_daily if you hadn't caught the duplicate at staging level?</div>`
+<div class="checkpoint"><b>Checkpoint:</b> Run dbt test --select stg_weather. See one test fail. Fix it. Run again — all pass. Write in your notes: what would break in mart_weather_daily if you hadn't caught the duplicate at staging level?</div>`,
+          practice:[
+            "Write a custom singular test: create tests/assert_temp_in_range.sql that selects rows from stg_weather where temp_c > 50 OR temp_c < -20. If it returns ANY rows, the test fails. Run dbt test.",
+            "Add <code>config(severity='warn')</code> to the unique test on ingested_at. Run dbt test. Observe: the test warns but the run doesn't fail. Write: when do you use warn vs error severity?",
+            "Run <code>dbt test --store-failures --select stg_weather</code>. Find the failures table in BQ (under the dbt_test__failures schema). Query it to see the exact rows that failed. This is how you diagnose production test failures.",
+          ]
         }
       ]
     },
@@ -813,7 +951,12 @@ dbt test  # unique test on ingested_at now fails
           tool:[],
           conceptQ:"Explain to an imaginary junior: what is ref() in dbt and why is it better than hardcoding a table name? What happens when you run dbt run — what SQL does dbt actually execute in BigQuery?",
           body:`<div class="goal-box"><b>Goal:</b> Draw the full dbt DAG from memory. Explain ref(), source(), tests, and the layered model pattern.</div>
-<div class="checkpoint"><b>Checkpoint:</b> Answer: "Your tech lead asks why you have three layers (stg, int, mart) instead of one big SQL query. What is your answer?" If you can justify each layer clearly, your dbt mental model is production-grade.</div>`
+<div class="checkpoint"><b>Checkpoint:</b> Answer: "Your tech lead asks why you have three layers (stg, int, mart) instead of one big SQL query. What is your answer?" If you can justify each layer clearly, your dbt mental model is production-grade.</div>`,
+          practice:[
+            "Explain the dbt DAG out loud to an imaginary colleague: why staging exists, what ref() compiles to at runtime, why you can't skip straight from raw to mart, what dbt test executes in BQ.",
+            "Write from memory for each model layer: stg_ (uniqueness + not_null), int_ (business logic validation), mart_ (referential integrity). Why does each layer get different test types?",
+            "Answer out loud: 'A new column appears in weather_raw next week. Walk me through every dbt file you would touch.' Cover: source yml, stg_weather.sql, schema.yml tests, and any mart models that need the new column.",
+          ]
         }
       ]
     }
@@ -881,7 +1024,12 @@ with open('input_events.txt', 'w') as f:
 "
 python3 local_pipeline.py</pre>
 <div class="notice"><b>Notice:</b> The | operator chains PTransforms. Each transform receives a PCollection and returns a new PCollection. The pipeline is a DAG — Beam optimizes the execution order. This is fundamentally different from a Pandas script which processes sequentially.</div>
-<div class="checkpoint"><b>Checkpoint:</b> Add a beam.Filter step that removes events with temp_c > 35 (heat extremes). Where in the chain do you add it? Draw the resulting pipeline DAG. This is what the Dataflow UI shows.</div>`
+<div class="checkpoint"><b>Checkpoint:</b> Add a beam.Filter step that removes events with temp_c > 35 (heat extremes). Where in the chain do you add it? Draw the resulting pipeline DAG. This is what the Dataflow UI shows.</div>`,
+          practice:[
+            "Add a beam.Filter step that removes events where city is not in ['Bangkok', 'Singapore']. Place it AFTER the Parse step. Run the pipeline and verify only those 2 cities appear in the output file.",
+            "Add an aggregation: <code>beam.Map(lambda r: (r['city'], 1))</code> then <code>beam.CombinePerKey(sum)</code>. Print the city counts. This is your first key-value aggregation in Beam — the foundation of all GROUP BY in distributed processing.",
+            "After running, open the output file and verify temp_f is correct for Bangkok: 32°C should produce 89.6°F. Always validate transforms with a known input/output pair before deploying to Dataflow.",
+          ]
         }
       ]
     },
@@ -953,7 +1101,12 @@ with beam.Pipeline(options=opts) as p:
 # Deploy (takes 3-5 minutes to start)
 python3 streaming_pipeline.py</pre>
 <div class="notice"><b>Notice:</b> Go to GCP Console → Dataflow → your job. Watch stages, workers, and throughput metrics appear in real time. The job graph shows exactly the pipeline DAG you defined in code. Each node = one PTransform.</div>
-<div class="checkpoint"><b>Checkpoint:</b> After 5 minutes, query weather_processed in BigQuery. Rows should appear. Then: increase producer frequency to 2 events/second and watch Dataflow autoscale workers. Record the worker count before and after in your notes.</div>`
+<div class="checkpoint"><b>Checkpoint:</b> After 5 minutes, query weather_processed in BigQuery. Rows should appear. Then: increase producer frequency to 2 events/second and watch Dataflow autoscale workers. Record the worker count before and after in your notes.</div>`,
+          practice:[
+            "Change FixedWindows(60) to SlidingWindows(120, 60) (2-min window, 1-min slide). Run 3 minutes. Query BQ — you should see ~2x more rows than FixedWindows. Write: why does each event appear in 2 windows with sliding?",
+            "Stop your Dataflow job via DRAIN. Observe it waits for in-flight work. Then cancel a new run. Note the BQ row count difference. Write: when do you use DRAIN vs CANCEL in production?",
+            "Increase producer to 3 events/second. Watch Dataflow worker count in the UI autoscale. Record before and after worker counts. This autoscaling is the key advantage of Dataflow over a fixed-size VM.",
+          ]
         }
       ]
     },
@@ -1000,7 +1153,12 @@ print('Done — watch Dataflow worker count in UI')
 # Search: dataflow/job/system_lag
 # If system_lag > 30s: consumers are falling behind producers</pre>
 <div class="warn"><b>Important:</b> Malformed messages should be logged and skipped, not crash the pipeline. Your ParseAndEnrich DoFn already has try/except. Check that failed parses appear in logs but the pipeline keeps running. This is the correct production pattern.</div>
-<div class="checkpoint"><b>Checkpoint:</b> Find a failed parse in Stackdriver Logs. Write the exact log filter query you used. This filter query goes in your personal runbook — it's what you'll run at 10am on day 1 of your project when something breaks.</div>`
+<div class="checkpoint"><b>Checkpoint:</b> Find a failed parse in Stackdriver Logs. Write the exact log filter query you used. This filter query goes in your personal runbook — it's what you'll run at 10am on day 1 of your project when something breaks.</div>`,
+          practice:[
+            "Publish 100 messages where 10% are missing temp_c. Confirm exactly ~10 ERROR logs appear in Dataflow while the job continues processing the valid 90%. Write: why is logging-and-continuing better than crashing on bad data?",
+            "In Cloud Logging, build and SAVE a log filter: <code>resource.type=\"dataflow_step\" AND severity=ERROR AND resource.labels.job_name=\"weather-streaming-v1\"</code>. This filter is Step 1 of your production runbook.",
+            "Find your Dataflow job's GCS staging location in job details. Run <code>gsutil ls gs://your-bucket/dataflow-temp/</code>. Write: why does Dataflow need to stage files to GCS before starting workers?",
+          ]
         }
       ]
     },
@@ -1016,7 +1174,12 @@ print('Done — watch Dataflow worker count in UI')
           tool:[],
           conceptQ:"Draw the Dataflow execution model: PCollections → PTransforms → stages → workers. Compare: how is this similar to a Spark DAG? How is it different from a sequential Python script?",
           body:`<div class="goal-box"><b>Goal:</b> Draw the full pipeline from Week 1–4 from memory: GCS → Pub/Sub → Dataflow → BQ raw → dbt stg → dbt int → dbt mart.</div>
-<div class="checkpoint"><b>Checkpoint:</b> Answer: "A tech lead asks why you use Dataflow between Pub/Sub and BQ instead of the direct BQ subscription you used in Week 2. What is your answer?" (Dataflow = transform logic, enrichment, windowing, error handling. Direct BQ subscription = no transforms, just raw storage.)</div>`
+<div class="checkpoint"><b>Checkpoint:</b> Answer: "A tech lead asks why you use Dataflow between Pub/Sub and BQ instead of the direct BQ subscription you used in Week 2. What is your answer?" (Dataflow = transform logic, enrichment, windowing, error handling. Direct BQ subscription = no transforms, just raw storage.)</div>`,
+          practice:[
+            "Draw the full Week 1–4 pipeline from memory: every component box, every arrow labeled with the data format at that point (JSON bytes / BQ rows / dbt views), and the tool responsible for each transformation.",
+            "List 3 specific things your Dataflow pipeline does that the direct Pub/Sub → BQ subscription from Week 2 CANNOT do. These 3 things = your justification when a tech lead asks 'why not just use the BQ subscription?'",
+            "Answer: 'A colleague says Dataflow is too complex — let's just use the BQ subscription.' Give 2 scenarios where Dataflow is required and 1 scenario where the BQ subscription is the right choice.",
+          ]
         }
       ]
     }
@@ -1087,7 +1250,12 @@ with DAG(
 # gcloud composer environments storage dags import \
 #   --environment=de-lab-composer --location=$REGION --source=dags/hello_dag.py</pre>
 <div class="notice"><b>Notice:</b> catchup=False prevents Airflow from backfilling all missed runs since start_date. Always set this on new DAGs — without it, Airflow tries to run hundreds of historical executions and overwhelms the scheduler.</div>
-<div class="checkpoint"><b>Checkpoint:</b> Open the Airflow UI (Composer → Open Airflow UI). Find your DAG. Confirm it ran successfully at least once. Click a task instance → View Logs. This is how you debug any task failure in production.</div>`
+<div class="checkpoint"><b>Checkpoint:</b> Open the Airflow UI (Composer → Open Airflow UI). Find your DAG. Confirm it ran successfully at least once. Click a task instance → View Logs. This is how you debug any task failure in production.</div>`,
+          practice:[
+            "Modify hello_dag to run every 5 minutes. Re-upload. Then temporarily set catchup=True and observe the UI queue many backfill runs. Set back to catchup=False immediately. Write: why is catchup=True dangerous on a new DAG?",
+            "Add a BashOperator to hello_dag that runs: <code>echo \"Bangkok time: $(TZ=Asia/Bangkok date)\"</code>. Connect task_hello >> bash_echo. Trigger manually. Confirm both tasks show green in the UI.",
+            "Deliberately add <code>raise ValueError('test failure')</code> to print_hello. Trigger. Watch the retry behavior (retries=2). Count retry attempts in the task log. Remove the error, clear task state, and rerun successfully.",
+          ]
         }
       ]
     },
@@ -1185,7 +1353,12 @@ with DAG(
     # Define dependency order
     ingest >> validate >> dbt_stg >> dbt_test >> dbt_mart</pre>
 <div class="notice"><b>Notice:</b> The >> operator defines dependency. ingest >> validate means validate only starts when ingest succeeds. If validate fails, dbt_stg never runs. This is exactly how CI/CD pipeline stages work.</div>
-<div class="checkpoint"><b>Checkpoint:</b> Trigger the DAG manually from the Airflow UI. Watch each task go green. Then deliberately make validate fail (set threshold to 10000 rows). Watch the cascade — dbt tasks never run. This is dependency management working correctly.</div>`
+<div class="checkpoint"><b>Checkpoint:</b> Trigger the DAG manually from the Airflow UI. Watch each task go green. Then deliberately make validate fail (set threshold to 10000 rows). Watch the cascade — dbt tasks never run. This is dependency management working correctly.</div>`,
+          practice:[
+            "Use XCom in validate_row_count: push the count with <code>context['ti'].xcom_push(key='row_count', value=cnt)</code>. Add a logging task that pulls it. XCom is how tasks share small data — write when you would NOT use XCom (large DataFrames, files).",
+            "Change schedule_interval to run at 6am Bangkok time (UTC+7 = 23:00 UTC): <code>'0 23 * * *'</code>. Verify in Airflow UI that the 'Next Run' shows the correct Bangkok morning time.",
+            "Set validate's threshold to 10000 rows to force failure. Trigger the DAG. Confirm dbt_stg, dbt_test, dbt_mart all show 'skipped' — they never run when upstream fails. This is task dependency working correctly.",
+          ]
         }
       ]
     },
@@ -1253,7 +1426,12 @@ handle_failure = PythonOperator(
 # Step 3: Fix root cause
 # Step 4: Clear failed task in Airflow UI → Mark Success or Rerun
 # Step 5: Verify next scheduled run completes successfully</pre>
-<div class="checkpoint"><b>Checkpoint:</b> Trigger the DAG with the validate task threshold set to fail. Observe on_failure_alert fire in the logs. Then use "Clear task state" in the Airflow UI to rerun only the failed task. This skill = knowing how to recover a pipeline without full rerun.</div>`
+<div class="checkpoint"><b>Checkpoint:</b> Trigger the DAG with the validate task threshold set to fail. Observe on_failure_alert fire in the logs. Then use "Clear task state" in the Airflow UI to rerun only the failed task. This skill = knowing how to recover a pipeline without full rerun.</div>`,
+          practice:[
+            "Set retries=1 and retry_delay=timedelta(seconds=10) on one task. Force a failure. Watch it retry in the UI after 10 seconds. Set retries=3 — see 3 attempts. Write: what retry settings would you use in production and why?",
+            "Use the Airflow UI to rerun ONLY the dbt_test task (right-click → Clear → only this task). Confirm ingest, validate, and dbt_stg do NOT rerun. This task-level recovery avoids unnecessary re-ingestion.",
+            "Write a complete RUNBOOK in your notes for weather_pipeline: 4 failure scenarios, first thing to check for each, and the exact Airflow UI step to recover each one. This is your Day 1 on-call reference.",
+          ]
         }
       ]
     },
@@ -1269,7 +1447,12 @@ handle_failure = PythonOperator(
           tool:[],
           conceptQ:"Draw your full DAG with all tasks and dependencies. Map each Airflow concept: ingest task = E, validate = quality gate, dbt_stg = T, dbt_mart = L into serving layer. Where does the data quality enforcement happen in this DAG?",
           body:`<div class="goal-box"><b>Goal:</b> Draw the complete 5-week pipeline: API → producer → Pub/Sub → Dataflow → BQ raw → dbt stg → dbt mart → Airflow DAG orchestrating all of it.</div>
-<div class="checkpoint"><b>Checkpoint:</b> Answer: "A colleague asks what happens if the weather API is down for 2 hours. Walk me through what Airflow does." (Retries 3x with 2min delay → on_failure_callback fires → handle_failure task runs → next scheduled run attempts again.) If you can trace this end-to-end, your orchestration mental model is production-ready.</div>`
+<div class="checkpoint"><b>Checkpoint:</b> Answer: "A colleague asks what happens if the weather API is down for 2 hours. Walk me through what Airflow does." (Retries 3x with 2min delay → on_failure_callback fires → handle_failure task runs → next scheduled run attempts again.) If you can trace this end-to-end, your orchestration mental model is production-ready.</div>`,
+          practice:[
+            "Draw the complete DAG from memory: all task boxes, all >> arrows, on_failure_callback connection, handle_failure task with its trigger_rule. Label each task with its Airflow operator type.",
+            "Write your pipeline description in one paragraph for a new team member on Day 1. Cover: what it collects, how data flows, what runs on schedule, and what happens when something fails. Read it out loud.",
+            "Answer: 'Your manager asks for a weekly pipeline success rate report.' Which GCP service captures Airflow task state changes? (Hint: Cloud Logging → BQ log sink → query the log entries.)",
+          ]
         }
       ]
     }
@@ -1355,7 +1538,12 @@ quality_check = PythonOperator(
 )
 # Update dependency: ingest >> validate >> quality_check >> dbt_stg >> ...</pre>
 <div class="notice"><b>Notice:</b> The pipeline now has a quality gate before transformation. If raw data fails quality checks, dbt models never run and you get clean errors in Airflow rather than silently bad mart data. This is the production pattern.</div>
-<div class="checkpoint"><b>Checkpoint:</b> Deliberately publish events with temp_c='999' (impossible value). Run gx_checks.py. See the distribution expectation fail. The pipeline stops before dbt runs. Write: why is stopping early better than letting bad data flow into the mart?</div>`
+<div class="checkpoint"><b>Checkpoint:</b> Deliberately publish events with temp_c='999' (impossible value). Run gx_checks.py. See the distribution expectation fail. The pipeline stops before dbt runs. Write: why is stopping early better than letting bad data flow into the mart?</div>`,
+          practice:[
+            "Add a freshness expectation: the max ingested_at in weather_raw must be within the last 2 hours. Use expect_column_max_to_be_between with datetime bounds. Run it after your producer stops to watch it fail.",
+            "Modify gx_checks.py to write the validation result as JSON to GCS: save to <code>gs://$BUCKET-bronze/gx-reports/YYYY-MM-DD.json</code>. Auditable quality reports are a production requirement.",
+            "Deliberately publish 5 events with temp_c='999'. Run gx_checks.py. See the distribution expectation fail and the pipeline stop. Write: what would appear in your Looker Studio dashboard if this gate didn't exist?",
+          ]
         }
       ]
     },
@@ -1418,7 +1606,12 @@ gcloud alpha monitoring policies create \
   --condition-threshold-value=1000 \
   --condition-threshold-duration=300s \
   --notification-channels=YOUR_CHANNEL_ID</pre>
-<div class="checkpoint"><b>Checkpoint:</b> Your dashboard shows at least 3 live metrics. Write your runbook entry: "If backlog alert fires, check: (1) is producer running? (2) is Dataflow job alive? (3) is BQ subscription active?" These three checks resolve 90% of backlog issues.</div>`
+<div class="checkpoint"><b>Checkpoint:</b> Your dashboard shows at least 3 live metrics. Write your runbook entry: "If backlog alert fires, check: (1) is producer running? (2) is Dataflow job alive? (3) is BQ subscription active?" These three checks resolve 90% of backlog issues.</div>`,
+          practice:[
+            "Create a cost guard alert: go to Cloud Monitoring → Alert Policies and create a policy that fires if daily BQ bytes_billed exceeds 5GB. This prevents surprise bills during development.",
+            "Create a log-based metric: in Cloud Logging, filter for ERROR severity in your Dataflow job logs. Create a metric from this filter. Add it to your dashboard as a chart. This is your pipeline error rate over time.",
+            "Set up a Pub/Sub topic uptime check in Cloud Monitoring. If the topic is accidentally deleted, you get an alert within 1 minute. Write: what other resources would you add uptime checks for in a real project?",
+          ]
         }
       ]
     },
@@ -1472,7 +1665,12 @@ gcloud alpha monitoring policies create \
 # - Partition strategy: DATE(ingested_at) — queries filter by day
 #
 # Runbook: see runbook.md for failure recovery steps</pre>
-<div class="checkpoint"><b>Checkpoint:</b> Record a 5-min screen walkthrough (Loom, QuickTime, or any recorder) that covers: (1) Airflow DAG running, (2) BigQuery mart table, (3) Looker Studio dashboard, (4) Cloud Monitoring dashboard. This recording = your portfolio piece for the next 6 months.</div>`
+<div class="checkpoint"><b>Checkpoint:</b> Record a 5-min screen walkthrough (Loom, QuickTime, or any recorder) that covers: (1) Airflow DAG running, (2) BigQuery mart table, (3) Looker Studio dashboard, (4) Cloud Monitoring dashboard. This recording = your portfolio piece for the next 6 months.</div>`,
+          practice:[
+            "Add a combo chart to Looker Studio showing daily_min_temp_c and daily_max_temp_c as bars (temperature range) with daily_avg_temp_c as a line overlay. This tells a more complete story than a single average line.",
+            "Add a data freshness scorecard: a metric showing MAX(event_date) from mart_weather_daily. If it shows yesterday, your pipeline is stale. This is your first SLO indicator in a dashboard.",
+            "Export your architecture doc as PDF. Share your Looker Studio report as a view-only link. Write both URLs in your notes under 'Portfolio artifacts.' These are the two things you show on your first project day.",
+          ]
         }
       ]
     },
@@ -1501,7 +1699,12 @@ gcloud alpha monitoring policies create \
 #           Explain: why sliding windows double the output row count
 #           Insight: sliding overlap means each event is in 2 windows</pre>
 <div class="warn"><b>Rule for gap sprint:</b> Do NOT learn anything new. Do NOT start a new topic. The entire value is depth on things you already know 50%. Going from 50% to 80% on 3 topics is worth more than learning a 4th topic at 10%.</div>
-<div class="checkpoint"><b>Week 6 — Final checkpoint:</b> Can you answer these 5 questions from memory without notes?<br>1. Why does BigQuery charge per byte scanned, not per query?<br>2. What is the difference between a Pub/Sub subscription and a Kafka consumer group?<br>3. What does ref() do in dbt at compile time?<br>4. What is a Beam watermark and why does it exist?<br>5. What is trigger_rule=ONE_FAILED and when do you use it?<br><br>If you can answer all 5 clearly, you are ready for the project.</div>`
+<div class="checkpoint"><b>Week 6 — Final checkpoint:</b> Can you answer these 5 questions from memory without notes?<br>1. Why does BigQuery charge per byte scanned, not per query?<br>2. What is the difference between a Pub/Sub subscription and a Kafka consumer group?<br>3. What does ref() do in dbt at compile time?<br>4. What is a Beam watermark and why does it exist?<br>5. What is trigger_rule=ONE_FAILED and when do you use it?<br><br>If you can answer all 5 clearly, you are ready for the project.</div>`,
+          practice:[
+            "Pick your single weakest concept from Weeks 1–5. Find the exact exercise that introduced it. Redo it from scratch without any notes in under 30 minutes. If you can do it — it is now in your muscle memory.",
+            "Write your biggest 'aha moment' from the 6 weeks in at least 200 words. What did you incorrectly believe before starting? What do you now understand clearly? This reflection anchors the learning.",
+            "Write 5 questions you want to ask a senior DE on your first project day. Questions like 'how do you handle schema migrations in production?' signal seniority, not ignorance. Write them before Day 43 ends.",
+          ]
         }
       ]
     }
@@ -1580,6 +1783,15 @@ function renderDay() {
     const key = `${currentWeek}-${currentDay}-${ei}`;
     const done = checks[key];
     
+    let practiceHTML = '';
+    if (ex.practice && ex.practice.length) {
+      const items = ex.practice.map((p,pi) => `
+        <div class="practice-item">
+          <span class="practice-num">P${pi+1}</span>
+          <div>${p}</div>
+        </div>`).join('');
+      practiceHTML = `<div class="practice-block"><div class="practice-hdr">Practice drills — do these after completing the exercise above</div>${items}</div>`;
+    }
     let theoryHTML = '';
     if (ex.theory && ex.theory.length) {
       const items = ex.theory.map(t => `
@@ -1608,17 +1820,26 @@ function renderDay() {
       toolHTML = `<div class="tool-block"><div class="tool-hdr">Tool resource — how GCP implements this concept</div>${items}</div>`;
     }
     
+    const prKey = `${currentWeek}-${currentDay}-${ei}`;
+    const pr = practiceData[prKey];
+    let prHTML = '';
+    if (pr) {
+      const taskItems = pr.tasks.map(t => `<div class="practice-task">${t}</div>`).join('');
+      const extraLinks = (pr.extra || []).map(e => `<a class="practice-link" href="${e.url}" target="_blank">${e.name} →</a>`).join('');
+      prHTML = `<div class="practice-block"><div class="practice-hdr">Hands-on practice drill</div><div class="practice-meta"><span class="practice-badge">${pr.badge}</span><span class="practice-dur">${pr.dur}</span></div><div><a class="practice-link" href="${pr.labUrl}" target="_blank" style="font-weight:500;color:#412402">${pr.labName} →</a>${extraLinks ? ' '+extraLinks : ''}</div><div class="practice-task-list" style="margin-top:8px">${taskItems}</div><div class="practice-deliverable"><b>Deliverable:</b> ${pr.deliverable}</div></div>`;
+    }
     html += `
       <div class="ex">
         <div class="ex-hd" onclick="toggleEx('eb-${currentWeek}-${currentDay}-${ei}')">
           <span class="ex-num" style="background:${ex.nc};color:${ex.nt}">${ex.num}</span>
           <span class="ex-title">${ex.title}</span>
-          <div class="done-btn ${done?'done':''}" id="ck-${key}" onclick="event.stopPropagation();markDone('${key}')">${done?'✓':''}</div>
+          <div class="done-btn ${done?'done':''}" id="ck-${key}" onclick="event.stopPropagation();markDone('${key}')">${done?'\u2713':''}</div>
         </div>
         <div class="ex-bd" id="eb-${currentWeek}-${currentDay}-${ei}">
           ${theoryHTML}${toolHTML}
           <div class="concept-q"><b>Concept check — answer before opening the terminal:</b><br>${ex.conceptQ}</div>
           ${ex.body}
+          ${prHTML}
         </div>
       </div>`;
   });
